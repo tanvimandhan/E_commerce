@@ -8,7 +8,7 @@ const currency='inr'
 const deliveryCharge=10
 
 //gateway intialize
-//const stripe=new Stripe(process.env.STRIPE_SECRET_KEY)
+      const stripe=new Stripe(process.env.STRIPE_SECRET_KEY)
 
 // const razorpayInstance=new razorpay({
 //     key_id:process.env.RAZORPAY_KEY_ID,
@@ -42,7 +42,7 @@ const placeOrderStripe=async(req,res)=>{
         const {userId,items,amount,address}=req.body;
         const {origin}=req.headers;
         const orderData={
-            userId,items,amount,address,paymentMethod:"cod",payment:false,
+            userId,items,address,amount,paymentMethod:"Stripe",payment:false,
             date:Date.now()
         }
         const newOrder=new orderModel(orderData)
@@ -60,12 +60,12 @@ const placeOrderStripe=async(req,res)=>{
             price_data:{
                 currency:currency,
                 product_data:{
-                    name:'Deivery charges'
+                    name:'Delivery charges'
                 },
                 unit_amount:deliveryCharge*100
             },quantity:1
         })
-        const session=await Stripe.checkout.sessions.create({
+        const session=await stripe.checkout.sessions.create({
             success_url:`${origin}/verify?success=true&orderId=${newOrder._id}`,
             cancel_url:`${origin}/verify?success=false&orderId=${newOrder._id}`,
             line_items,
