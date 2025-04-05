@@ -130,6 +130,7 @@ const ShopContextProvider = ({ children }) => {
 
     useEffect(()=>{
         if(!token && localStorage.getItem('token')){
+            console.log(token);
             setToken(localStorage.getItem('token'));
             //getUserCart(localStorage.getItem('token'))
         } 
