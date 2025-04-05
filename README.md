@@ -1,4 +1,4 @@
-# 👗 MERN E-commerce Website for Clothing
+#  MERN E-commerce Website
 
 A full-featured **MERN stack e-commerce platform** for clothing that allows users to browse products, add items to cart, place orders, and track them — with a modern user experience and flexible payment options.
 
