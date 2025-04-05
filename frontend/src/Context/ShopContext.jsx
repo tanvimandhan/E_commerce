@@ -1,30 +1,34 @@
 import { createContext, useEffect, useState } from "react";
-// import { products } from "../assets/assets";
+ import { products } from "../assets/assets";
 import React from "react";
 import { ToastContainer,toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export const ShopContext = createContext({
-    products: [],
-    currency: "$",
-    delivery_fee: 10
-});
+export const ShopContext = createContext();
 
+// {
+//     products: [],
+//     currency: "$",
+//     delivery_fee: 10
+// }
 const ShopContextProvider = ({ children }) => {
-    const currency = "$";
+    const currency = "Rs ";
     const delivery_fee = 10;
     const backendUrl=import.meta.env.VITE_BACKEND_URL
     const [search,setSearch]=useState('');
-    const [showSearch,setShowSearch]=useState(false);
+    const [showSearch,setShowSearch]=useState(true);
     const [cartItems,setCartItems]=useState({});
-    const [products,setProducts]=useState([]);
+    //const [products,setProducts]=useState([]);
     const [token,setToken]=useState('')
     const navigate=useNavigate();
 
     const addTocart=async(itemId,Size)=>{
         
        let cartData=structuredClone(cartItems);
+       //let cartData={...cartItems}; it is an another way to make copy creates a shallow copy so any changes in 
+       // cartData will affect cartitems also but not affect while using structuredClone
+
        if(!Size){
         toast.error('select product size');
         return;
@@ -51,7 +55,7 @@ const ShopContextProvider = ({ children }) => {
        }
        
     }
-   const getCartcount=()=>{
+    const getCartcount=()=>{
     let totalcount=0;
     for(const items in cartItems){
         for(const item in cartItems[items]){
@@ -65,8 +69,8 @@ const ShopContextProvider = ({ children }) => {
             }
         }
     }return totalcount;
-   }
-   const updateQuantity=async(itemId,Size,quantity)=>{
+    }
+    const updateQuantity=async(itemId,Size,quantity)=>{
       let cartdata=structuredClone(cartItems);
       cartdata[itemId][Size]=quantity;
        setCartItems(cartdata);
@@ -78,8 +82,8 @@ const ShopContextProvider = ({ children }) => {
             toast.error(error.message)
         }
        }
-    }
-    const getcartAmount=()=>{
+     }
+     const getcartAmount=()=>{
         let total=0;
         for(const items in cartItems){
             let itemInfo=products.find((product)=>product._id===items);
@@ -94,22 +98,22 @@ const ShopContextProvider = ({ children }) => {
                 }
             }
         }return total;
-    }
-    const getProductsData=async()=>{
-        try{
-            const response=await axios.get(backendUrl+'/api/product/list')
-            //console.log(response.data);
-            if(response.data.success){
-                setProducts(response.data.products);
-            }else{
-                toast.error(response.data.message);
-            }
-        }catch(error){
-             console.log(error);
-             toast.error(error.message)
-        }
-    }
-    const getUserCart=async(token)=>{
+     }
+     const getProductsData=async()=>{
+//         try{
+//             const response=await axios.get(backendUrl+'/api/product/list')
+//             //console.log(response.data);
+//             if(response.data.success){
+//                 setProducts(response.data.products);
+//             }else{
+//                 toast.error(response.data.message);
+//             }
+//         }catch(error){
+//              console.log(error);
+//              toast.error(error.message)
+//         }
+     }
+     const getUserCart=async(token)=>{
         try{
            const response=await axios.post(backendUrl+'/api/cart/get',{},{headers:{token}})
            if(response.data.success){
@@ -119,7 +123,7 @@ const ShopContextProvider = ({ children }) => {
             console.log(error);
             toast.error(error.message)
         }
-    }
+     }
     useEffect(()=>{
         getProductsData()
     },[])
@@ -130,6 +134,7 @@ const ShopContextProvider = ({ children }) => {
             //getUserCart(localStorage.getItem('token'))
         } 
     },[])
+       
 
     const value = {
         products,

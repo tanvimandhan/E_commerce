@@ -7,12 +7,12 @@ import Contact from './Pages/Contact'
 import Product from './Pages/Product'
 import Cart from './Pages/Cart'
 import PlaceOrder from './Pages/PlaceOrder'
-import Navbar from './Components/Navbar'
 import Login from './Pages/Login'
 import Orders from './Pages/Orders'
+import Verify from './Pages/Verify'
 import Footer from './Components/Footer'
 import Searchbar from './Components/Searchbar'
-import Verify from './Pages/Verify'
+import Navbar from './Components/Navbar'
 import {ToastContainer,toast} from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -22,7 +22,7 @@ const App = () => {
       <ToastContainer/>
       <Navbar/>
       <Searchbar/>
-       <Routes>
+      <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/collection' element={<Collection/>} />
           <Route path='/place-order' element={<PlaceOrder/>} />
@@ -34,8 +34,8 @@ const App = () => {
           <Route path='/orders' element={<Orders/>} />
           <Route path='verify' element={<Verify/>}/>
 
-        </Routes>  
-        <Footer/>
+      </Routes>  
+      <Footer/>
     </div>
   )
 }
